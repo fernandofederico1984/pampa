@@ -1,0 +1,14 @@
+{
+  "specification" : "${specificationName}",
+  "scenarios" : [
+        <% testScenarios.each { %>
+                { "name" : "${it.name}()",
+                  "blocks": [ {
+                      <% it.blocks.each { %>
+                          "name" : "${it.name}",
+                          "description" : "${it.description}" }
+                      <% } %> ]
+                }
+          <%}%>
+          ]
+}
