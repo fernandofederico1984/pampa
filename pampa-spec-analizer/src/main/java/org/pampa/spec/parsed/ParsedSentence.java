@@ -6,6 +6,8 @@
 
 package org.pampa.spec.parsed;
 
+import java.util.List;
+
 import opennlp.tools.parser.Parse;
 
 /**
@@ -14,11 +16,11 @@ import opennlp.tools.parser.Parse;
 public class ParsedSentence
 {
 
-    private Parse sentence;
-    private Parse who;
-    private Parse what;
+    public Parse sentence;
+    private List<Parse> who;
+    private List<Parse> what;
 
-    public ParsedSentence(Parse sentence, Parse who, Parse what)
+    public ParsedSentence(Parse sentence, List<Parse> who, List<Parse> what)
     {
         this.sentence = sentence;
         this.who = who;
@@ -30,36 +32,55 @@ public class ParsedSentence
         return sentence.toString();
     }
 
-    public Parse getWho()
+    public List<Parse> getWho()
     {
         return who;
     }
 
-    public Parse getWhat()
+    public List<Parse> getWhat()
     {
         return what;
     }
 
-    public boolean isUnderstandable(){
-           return what != null && who != null;
+    public boolean isUnderstandable()
+    {
+        return what != null && who != null;
     }
 
     @Override
     public String toString()
     {
         StringBuffer stringBuffer = new StringBuffer();
-        if ( who != null ) {
-            stringBuffer.append("WHO: " + who.toString());
+        if (who != null)
+        {
+            stringBuffer.append("WHO: ");
+            for (Parse p : who)
+            {
+                if ( p != null ) {
+                    stringBuffer.append(";" + p.toString());
+                }
+            }
         }
-        else{
+        else
+        {
             stringBuffer.append("WHO: ? ");
 
         }
 
-        if ( what != null ) {
-            stringBuffer.append(" WHAT: " + what.toString());
+        if (what != null)
+        {
+            stringBuffer.append(" WHAT: ");
+            for (Parse p : what)
+            {
+                if (p != null)
+                {
+                    stringBuffer.append(";" + p.toString());
+                }
+
+            }
         }
-        else{
+        else
+        {
             stringBuffer.append(" WHAT: ? ");
 
         }
@@ -67,7 +88,8 @@ public class ParsedSentence
         return stringBuffer.toString();
     }
 
-    public void show(){
+    public void show()
+    {
         sentence.show();
     }
 }

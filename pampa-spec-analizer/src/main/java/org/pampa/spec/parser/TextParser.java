@@ -54,7 +54,8 @@ final class TextParser
         return instance;
     }
 
-    private TextParser(){
+    private TextParser()
+    {
 
     }
 
@@ -73,12 +74,8 @@ final class TextParser
 
         for (String detectedSentence : detect)
         {
-            String[] texts = detectedSentence.split("\\sand\\s|\\sbut\\s|\\sor\\s");
-            for ( String subSentence : texts ){
-                Parse parse = parser.parse(subSentence);
-                sentences.add(parse);
-
-            }
+            Parse parse = parser.parse(detectedSentence);
+            sentences.add(parse);
         }
         return sentences;
     }
@@ -95,7 +92,8 @@ final class TextParser
             {
                 np = context.getSubject();
             }
-            else{
+            else
+            {
                 Parse prp = findPRP(np);
                 if (prp != null)
                 {
@@ -104,12 +102,18 @@ final class TextParser
             }
 
 
-            parsedSentences.add(new ParsedSentence(sentence, np, findVp(sentence)));
+            Parse vp = findVp(sentence);
+            if ( vp == null ){
+                vp = context.getWhat();
+            }
+            parsedSentences.add(new ParsedSentence(sentence, Arrays.asList(np), Arrays.asList(vp)));
             context.setSubject(np);
+            context.setWhat(vp);
         }
 
         return parsedSentences;
     }
+
 
     private Parse findNp(Parse parse)
     {
@@ -136,19 +140,6 @@ final class TextParser
         }
         return null;
     }
-
-   private Parse findTag(Parse root, String ... tags){
-       for (Parse child : root.getChildren())
-       {
-           String type = child.getType();
-           if (Arrays.asList(tags).contains(type))
-           {
-               return child;
-           }
-
-       }
-       return null;
-   }
 
     private Parse findPRP(Parse parse)
     {
@@ -189,7 +180,6 @@ final class TextParser
         }
         return null;
     }
-
 
 
 }

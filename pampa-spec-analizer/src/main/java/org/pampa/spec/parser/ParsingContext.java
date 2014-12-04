@@ -14,6 +14,7 @@ import opennlp.tools.parser.Parse;
 class ParsingContext
 {
     private Parse subject;
+    private Parse what;
 
     public ParsingContext(Parse subject)
     {
@@ -31,4 +32,13 @@ class ParsingContext
     }
 
 
+    public Parse getWhat()
+    {
+        return what;
+    }
+
+    public void setWhat(Parse what)
+    {
+        this.what = what;
+    }
 }
